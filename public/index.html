@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="getData()">获取数据</button>
+</body>
+<script>
+    function getData(){
+        //query规定  接口的名字(接口的名字首字母大写，不大写也可以，接口的名字用其他名字也可以, 比如accountddd， 但是约定用的是Account
+        // )，参数，参数类型
+        const query = `query Account($userName: String, $city:String){
+            account(userName: $userName){
+                name
+                age
+                sex
+                salary(city: $city)
+            }
+        }
+        `;
+
+        const variables = {username:'李大四',city:"上海"};
+
+        fetch('/graphql',{
+            method:"POST",
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/josn'
+            },
+            body:JSON.stringify({
+                query:query,
+                variables:variables
+            })
+        })
+        .then(res=>res.json()).then(json=>console.log(json))
+    }
+</script>
+</html>
